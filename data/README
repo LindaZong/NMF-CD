@@ -1,0 +1,7 @@
+cbcl.mat is a face dataset, downloaded from http://cbcl.mit.edu/cbcl/software-datasets/FaceData2.html. 
+
+The preprocessing is the same as the following paper: 
+
+	C.-J. Lin. Projected gradient methods for non-negative matrix factorization. Neural Computation, 19(2007), 2756-2779
+
+

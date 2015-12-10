@@ -1,0 +1,114 @@
+
+NMF_CD is a package for solving non-negative matrix factorization. 
+It currently supports least squares NMF and KL-divergence NMF.
+This document explains the usage of NMF_CD. 
+
+Given a matrix V (n by m) and a specified positive integer k, NMF_CD
+seeks to approximate V by the product of two non-negative matrices 
+W (n by k) and H (k by m). The distance between V and WH can be 
+measured by various distortion functions. In this package we consider
+square loss and KL-divergence: 
+
+Least Saure NMF:
+      min_{W>=0,H>=0} ||V-WH||_F^2 = sum_{i,j} (V_{ij}-(WH)_{ij})^2
+
+KL-NMF:
+	  min_{W>=0,H>=0} sum_{i,j} ( V_{ij}*log(V_{ij}/(WH)_{ij}) - V_{ij} + (WH)_{ij} )
+
+For Least square NMF, we consider the both cases where the input data V 
+can be either dense or sparse. For KL-NMF, currently we only support the 
+dense input matrix. 
+
+
+Compile
+=======
+
+1. Go to dense_square/ folder, and excute the following line in matlab:
+   
+   mex doiter.cpp
+
+2. Go to dense_KL/ folder, and excute the following line in matlab:
+
+   mex KLnmf.cpp
+
+
+Quick Start
+===========
+
+1. If you want to use Least squares NMF with dense input matrix, pleast go to 
+   dense_square/ folder and run NMF_GCD. 
+   dense_square/run_random.m is a script for running NMF_GCD. 
+
+   'NMF_GCD' usage:
+   ===
+   Nonnegative Matrix Factorization (NMF) via Greedy Coordinate Descent
+  
+   Usage: [W H objGCD timeGCD] = NMF_GCD(V, k, maxiter, Winit, Hinit, trace)
+  
+   This software solve the following least squares NMF problem:
+  
+  	min_{W,H} ||V-WH||_F^2     s.t. W>=0, H>=0
+  
+   input: 
+  		V: the input n by m dense matrix
+  		k: the specified rank
+  		maxiter: maximum number of iterations
+  		Winit: initial of W (n by k dense matrix)
+  		Hinit: initial of H (k by m dense matrix)
+  		trace: 1: compute objective value per iteration.
+  			   0: do not compute objective value per iteration. (default)
+  
+   output: 
+  		NMF_GCD will output nonnegative matrices W, H, such that WH is an approximation of V
+  		W: n by k dense matrix
+  		H: k by m dense matrix
+  		objGCD: objective values. 
+  		timeGCD: time taken by GCD. 
+
+   ====
+
+2. If you want to use KL-NMF with dense input matrix, pleast go to 
+   dense_KL/ folder and run KLnmf. 
+   dense_KL/run_random.m is a script for running KLnmf. 
+
+   'KLnmf' Usage:
+   ==============
+
+
+   Usage: [W H objKL timeKL] = ccd_KL(V, k, max_iter, Winit, Hinit, trace);
+
+   Given the nonnegative input matrix V, this code solves the following KL-NMF problem to find the low-rank approximation WH for V. 
+
+   min_{W>=0,H>=0} sum_{i,j} V_{ij}*log(V_{ij}/(WH)_{ij})
+
+   Input arguments
+    	V: n by m nonnegative input matrix.
+   		k: rank of output matrices W and H. 
+ 		max_iter: maximum iteration. 
+ 		Winit: k by n initial matrix for W. 
+ 		Hinit: k by m initial matrix for H. 
+ 		trace: 1: compute objective value per iteration. 
+ 			   0: do not compute objective value per iteration. (default)
+
+   Output arguments
+ 		W: k by n dense matrix.
+ 		H: k by m dense matrix.
+ 		objKL: objective values.
+ 		timeKL: time taken by this algorithm. 
+
+
+Additional Information
+======================
+
+If you find NMF_CD helpful, please cite it as
+
+C.-J. Hsieh, Inderjit S. Dhillon.
+Fast Coordinate Descent Methods with Variable Selection for 
+Non-negative Matrix Factorization.
+The 17th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (KDD 2011). 
+Software available at http://www.cs.utexas.edu/~cjhsieh/nmf
+
+For any questions and comments, please send your email to
+cjhsieh@cs.utexas.edu
+
+
